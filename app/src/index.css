@@ -14,7 +14,6 @@
 
 body {
   margin: 0;
-  min-width: 1180px;
   min-height: 100vh;
   background: #090d12;
 }
@@ -87,7 +86,7 @@ code {
   gap: 7px;
 }
 
-.nav-rail a {
+.nav-rail button {
   color: #91a0af;
   text-decoration: none;
   padding: 10px 11px;
@@ -96,9 +95,14 @@ code {
   align-items: center;
   gap: 10px;
   font-size: 13px;
+  border: 0;
+  background: transparent;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
 }
 
-.nav-rail a.active {
+.nav-rail button.active {
   color: #e9fbf5;
   background: #102326;
   border: 1px solid #214247;
@@ -403,4 +407,81 @@ pre {
 
 .report-strip code {
   margin-left: 6px;
+}
+
+@media (max-width: 1120px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-rail {
+    border-right: 0;
+    border-bottom: 1px solid #1e2a36;
+    padding: 14px 16px;
+  }
+
+  .brand {
+    margin-bottom: 14px;
+  }
+
+  .nav-rail nav {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+
+  .nav-rail button {
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+  }
+
+  .topbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .status-strip {
+    flex-wrap: wrap;
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .connector {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .topbar,
+  .content-grid {
+    padding: 18px 16px;
+  }
+
+  .panel-title,
+  .report-strip {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .timeline,
+  .coverage-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .report-strip {
+    margin: 0 16px 18px;
+  }
+
+  .inspector pre {
+    max-width: calc(100vw - 64px);
+    overflow-x: auto;
+  }
 }

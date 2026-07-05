@@ -9,6 +9,7 @@ import {
   RadioTower,
   Upload,
 } from "lucide-react";
+import { useState } from "react";
 import "./index.css";
 
 type EventStatus = "valid" | "warning" | "error";
@@ -102,7 +103,17 @@ const coverage = [
   { name: "Lifecycle links", value: 91 },
 ];
 
+type ViewId = "import" | "trace" | "coverage" | "report";
+
+const navItems: Array<{ id: ViewId; label: string; icon: typeof Upload }> = [
+  { id: "import", label: "Event Import", icon: Upload },
+  { id: "trace", label: "Lifecycle Trace", icon: GitBranch },
+  { id: "coverage", label: "Schema Coverage", icon: FileCode2 },
+  { id: "report", label: "Report", icon: ClipboardList },
+];
+
 function App() {
+  const [view, setView] = useState<ViewId>("trace");
   const selected = events[4];
   const validCount = events.filter((event) => event.status === "valid").length;
   const warningCount = events.filter((event) => event.status === "warning").length;
@@ -119,10 +130,19 @@ function App() {
           </div>
         </div>
         <nav>
-          <a className="active"><Upload size={17} /> Event Import</a>
-          <a><GitBranch size={17} /> Lifecycle Trace</a>
-          <a><FileCode2 size={17} /> Schema Coverage</a>
-          <a><ClipboardList size={17} /> Report</a>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <button
+                className={view === item.id ? "active" : ""}
+                key={item.id}
+                onClick={() => setView(item.id)}
+                type="button"
+              >
+                <Icon size={17} /> {item.label}
+              </button>
+            );
+          })}
         </nav>
       </aside>
 
@@ -143,8 +163,18 @@ function App() {
           <div className="trace-panel">
             <div className="panel-title">
               <div>
-                <h2>L2 to L6 Lifecycle Trace</h2>
-                <p>Correlation ID <code>trace-ai5-r10</code></p>
+                <h2>
+                  {view === "import" && "Imported Event Chain"}
+                  {view === "trace" && "L2 to L6 Lifecycle Trace"}
+                  {view === "coverage" && "Schema Coverage"}
+                  {view === "report" && "Validation Report"}
+                </h2>
+                <p>
+                  {view === "import" && "Seeded Terafab lifecycle events are loaded for inspection."}
+                  {view === "trace" && <>Correlation ID <code>trace-ai5-r10</code></>}
+                  {view === "coverage" && "Coverage across envelope, topic, payload, and lifecycle-link checks."}
+                  {view === "report" && "Exportable report summary for the current event chain."}
+                </p>
               </div>
               <button><Download size={16} /> Export report</button>
             </div>
